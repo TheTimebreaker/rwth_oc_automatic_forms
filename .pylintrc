@@ -1,0 +1,6 @@
+[MASTER]
+disable=
+    C0114, # missing-module-docstring
+    W0401, # wildcard-imports
+    W0614, # unused-wildcard-imports
+    C0321
