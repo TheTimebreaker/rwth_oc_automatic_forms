@@ -1,1 +1,4 @@
 /.venv
+/__pycache__
+/output
+__pycache__/main.cpython-313.pyc

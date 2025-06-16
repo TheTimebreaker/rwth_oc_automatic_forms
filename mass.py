@@ -13,9 +13,9 @@ def freetext_fields(fields:list[str]):
     entries = {}
 
     root = tk.Tk()
-    root.title("dda")
+    root.title("Enter the values for the freetext fields.")
     for field in fields:
-        label = tk.Label(root, text=f"Enter your {field.replace('_', ' ')}:")
+        label = tk.Label(root, text=f"Enter: {field.replace('_', ' ')}:")
         label.pack(pady=2)
         entry = tk.Entry(root, width=40)
         entry.pack(pady=2)        
@@ -336,4 +336,4 @@ with Image.open('base_forms/mass_base.png') as image:
 
 
     timestamp = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
-    image.save(f'mass_form_filled_{timestamp}.png')
+    image.save(f'output/mass_form_filled_{timestamp}.png')
