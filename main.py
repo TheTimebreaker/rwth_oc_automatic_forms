@@ -1,5 +1,7 @@
+import io
+import molmass #type:ignore
+import chemdraw #type:ignore
 from PIL import Image, ImageDraw, ImageFont, ImageChops
-import time, molmass, chemdraw, io, cirpy
 
 def translate_by_dict(text:str, translation_map:dict[str, str]) -> str:
     """Translates a string by using a dictionary as a translation map.
@@ -41,7 +43,6 @@ def superscript(text:str) -> str:
     return translate_by_dict(text, superscript_map)
 
 
-
 def draw_text(
         img:Image.Image,
         position:tuple[int,int] = (0,0),
@@ -49,8 +50,17 @@ def draw_text(
         text_color:tuple[int,int,int]|str = "black",
         text_size:int = 100
         ) -> None:
+    """Draws text onto an image at given position. Changes image in-place, so no returns.
+
+    Args:
+        img (Image.Image): Image object
+        position (tuple[int,int], optional): X/Y position where the text gets drawn. Defaults to (0,0).
+        text (str, optional): The actual text. Defaults to "hello world".
+        text_color (tuple[int,int,int] | str, optional): Color of drawn text. Defaults to "black".
+        text_size (int, optional): Font size of drawn text. Defaults to 100.
+    """
     draw = ImageDraw.Draw(img)
-    draw_text_font:ImageFont.FreeTypeFont = ImageFont.truetype('fonts/arial.ttf', size= text_size)
+    draw_text_font:ImageFont.FreeTypeFont = ImageFont.truetype('fonts/DejaVuSans.ttf', size= text_size)
 
     draw.text(
         position,
@@ -60,6 +70,15 @@ def draw_text(
     )
 
 def crop_to_content(img:Image.Image, bg_color="white"):
+    """Crops an image to the content, cutting off background that extends beyond the non-bg pixels.
+
+    Args:
+        img (Image.Image): Image object
+        bg_color (str, optional): Background color that the image should get afterwards. Defaults to "white".
+
+    Returns:
+        _type_: _description_
+    """
     # Create a background image of the same size and color
     bg = Image.new("RGB", img.size, bg_color)
 
@@ -71,6 +90,7 @@ def crop_to_content(img:Image.Image, bg_color="white"):
         cropped = img.crop(bbox)
         return cropped
     return img
+
 def draw_molecule(
         img:Image.Image,
         position:tuple[int,int] = (0,0),
@@ -88,8 +108,8 @@ def draw_molecule(
     drawer = chemdraw.Drawer(smiles)
     molecule_bytes = drawer.draw().to_image()
 
-    with Image.open(io.BytesIO(molecule_bytes)) as b:
-        overlay_img = b.convert('RGB')
+    with Image.open(io.BytesIO(molecule_bytes)) as molecule:
+        overlay_img = molecule.convert('RGB')
         overlay_img = crop_to_content(overlay_img, 'white')
 
         # resizes to make sure image does not exceed the maximum allowed height/width
@@ -98,8 +118,10 @@ def draw_molecule(
         ratio = min(max_width / original_width, max_height / original_height)
         ratio = min(ratio, 2) #limits maximum scale up
         new_size = (int(original_width * ratio), int(original_height * ratio))
-        overlay_img = overlay_img.resize(new_size, Image.LANCZOS)
+        overlay_img = overlay_img.resize(new_size, Image.LANCZOS) #type:ignore #pylint:disable=no-member
+        overlay_img = overlay_img.convert('RGBA')
 
+        # img = img.convert('RGBA')
         img.paste(overlay_img, position)
 
 def molecule_sumformula_by_atom(sum_formula:str) -> dict[str, int]:
@@ -120,4 +142,3 @@ def molecule_sumformula_by_atom(sum_formula:str) -> dict[str, int]:
         print('ERROR - Invalid formula.')
         return {}
     return res
-

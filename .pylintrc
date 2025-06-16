@@ -3,4 +3,5 @@ disable=
     C0114, # missing-module-docstring
     W0401, # wildcard-imports
     W0614, # unused-wildcard-imports
-    C0321
+    C0301, # line-too-long
+    C0321, # multiple-statements
