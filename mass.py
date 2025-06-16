@@ -241,7 +241,7 @@ properties = checkbox_fields([
 analysis_method = checkbox_methods()
 
 
-with Image.open('base_forms/mass_base.png') as image:
+with Image.open('base_forms/ms.png') as image:
     draw_text(image, (1580,1100), f'{freetexts['name']} / {freetexts['workgroup']}', 'black', 80) # Name und Arbeitskreis
     draw_text(image, (1150,1370), freetexts['sample_name'], 'black', 80) # Substanzbezeichnung
     draw_text(image, (3140,1100), '', 'black', 80) # lfd. nummer
@@ -335,5 +335,7 @@ with Image.open('base_forms/mass_base.png') as image:
     draw_text(image, (400,5050), date_today, 'black', 80) # Date
 
 
+    image.show()
+    time.sleep(10)
     timestamp = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
     image.save(f'output/mass_form_filled_{timestamp}.png')
