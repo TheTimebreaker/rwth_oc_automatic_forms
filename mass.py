@@ -10,71 +10,6 @@ from PIL import Image
 
 import main
 
-def freetext_fields(fields:list[str]) -> dict:
-    """Function that opens a window for all the freetext fields
-
-    Args:
-        fields (list[str])
-
-    Returns:
-        dict: Results
-    """
-    def submit_and_close():
-        for fielddd in fields:
-            results[fielddd] = entries[fielddd].get()
-        root.quit()
-        root.destroy()
-    entries = {}
-
-    root = tk.Tk()
-    root.title("Enter the values for the freetext fields.")
-    for field in fields:
-        label = tk.Label(root, text=f"Enter: {field.replace('_', ' ')}:")
-        label.pack(pady=2)
-        entry = tk.Entry(root, width=40)
-        entry.pack(pady=2)
-        entries[field] = entry
-
-    # Button to trigger input handling
-    results:dict[str,str] = {}
-    submit_button = tk.Button(root, text="Submit", command=submit_and_close)
-    submit_button.pack(pady=10)
-
-    # Run the main loop
-    root.mainloop()
-    return results
-
-def checkbox_fields(fields:list[str]) -> dict:
-    """Function that opens a window for all checkbox fields
-
-    Args:
-        fields (list[str])
-
-    Returns:
-        dict: Results
-    """
-    def submit_and_close():
-        for label, var in checkboxes.items():
-            results[label] = var.get()
-        root.quit()
-        root.destroy()
-
-    root = tk.Tk()
-    root.title("Select Options")
-
-    results:dict[str, str] = {}
-    checkboxes = {}
-    for field in fields:
-        var = tk.BooleanVar()
-        cb = tk.Checkbutton(root, text=field, variable=var)
-        cb.pack(anchor="w")
-        checkboxes[field] = var
-
-    submit_btn = tk.Button(root, text="Submit", command=submit_and_close)
-    submit_btn.pack(pady=10)
-
-    root.mainloop()
-    return results
 
 def checkbox_methods() -> dict:
     """Function that opens a window for conditional checkboxes
@@ -213,7 +148,7 @@ def checkbox_methods() -> dict:
 
 
 if __name__ == '__main__':
-    freetexts = freetext_fields([
+    freetexts = main.freetext_fields([
             "name",
             "workgroup",
             "sample_name",
@@ -228,7 +163,7 @@ if __name__ == '__main__':
     if not freetexts['workgroup'].lower().startswith('ak '):
         freetexts['workgroup'] = f'AK {freetexts['workgroup']}'
 
-    properties = checkbox_fields([
+    properties = main.checkbox_fields([
             'solid',
             'liquid',
             'sirup',

@@ -1,6 +1,7 @@
 import io
 import molmass #type:ignore
 import chemdraw #type:ignore
+import tkinter as tk
 from PIL import Image, ImageDraw, ImageFont, ImageChops
 
 def translate_by_dict(text:str, translation_map:dict[str, str]) -> str:
@@ -142,3 +143,72 @@ def molecule_sumformula_by_atom(sum_formula:str) -> dict[str, int]:
         print('ERROR - Invalid formula.')
         return {}
     return res
+
+
+
+
+def freetext_fields(fields:list[str]) -> dict:
+    """Function that opens a window for all the freetext fields
+
+    Args:
+        fields (list[str])
+
+    Returns:
+        dict: Results
+    """
+    def submit_and_close():
+        for fielddd in fields:
+            results[fielddd] = entries[fielddd].get()
+        root.quit()
+        root.destroy()
+    entries = {}
+
+    root = tk.Tk()
+    root.title("Enter the values for the freetext fields.")
+    for field in fields:
+        label = tk.Label(root, text=f"Enter: {field.replace('_', ' ')}:")
+        label.pack(pady=2)
+        entry = tk.Entry(root, width=40)
+        entry.pack(pady=2)
+        entries[field] = entry
+
+    # Button to trigger input handling
+    results:dict[str,str] = {}
+    submit_button = tk.Button(root, text="Submit", command=submit_and_close)
+    submit_button.pack(pady=10)
+
+    # Run the main loop
+    root.mainloop()
+    return results
+
+def checkbox_fields(fields:list[str]) -> dict:
+    """Function that opens a window for all checkbox fields
+
+    Args:
+        fields (list[str])
+
+    Returns:
+        dict: Results
+    """
+    def submit_and_close():
+        for label, var in checkboxes.items():
+            results[label] = var.get()
+        root.quit()
+        root.destroy()
+
+    root = tk.Tk()
+    root.title("Select Options")
+
+    results:dict[str, str] = {}
+    checkboxes = {}
+    for field in fields:
+        var = tk.BooleanVar()
+        cb = tk.Checkbutton(root, text=field, variable=var)
+        cb.pack(anchor="w")
+        checkboxes[field] = var
+
+    submit_btn = tk.Button(root, text="Submit", command=submit_and_close)
+    submit_btn.pack(pady=10)
+
+    root.mainloop()
+    return results
