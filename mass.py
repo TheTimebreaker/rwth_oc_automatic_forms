@@ -1,4 +1,5 @@
 import tkinter as tk
+import os
 import urllib
 import urllib.error
 from datetime import date, datetime
@@ -287,7 +288,6 @@ if __name__ == '__main__':
                     FORMULA = tmp
                 else:
                     FORMULA = ''
-            FORMULA = 'C1H2N3O4Br5S6'
             FORMULA_BY_ATOMS = main.molecule_sumformula_by_atom(FORMULA)
             main.draw_molecule(image, (400, 2800), (2100, 810), SMILES)
 
@@ -345,4 +345,6 @@ if __name__ == '__main__':
 
 
         timestamp = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
-        image.save(f'output/mass_form_filled_{timestamp}.png')
+        output_path = os.path.join('output', f'mass_form_filled_{timestamp}.png')
+        image.save(output_path)
+        print(f'Image saved at {output_path}')
