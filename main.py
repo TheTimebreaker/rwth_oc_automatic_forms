@@ -48,7 +48,7 @@ def superscript(text:str) -> str:
 
 def draw_text(
         img:Image.Image,
-        position:tuple[int,int] = (0,0),
+        position:tuple[int,int] | tuple[int,int,int,int] = (0,0),
         text:str = "hello world",
         text_color:tuple[int,int,int]|str = "black",
         text_size:int = 100,
@@ -148,6 +148,21 @@ def molecule_sumformula_by_atom(sum_formula:str) -> dict[str, int]:
         return {}
     return res
 
+def molecule_masspercent_by_atom(sum_formula:str) -> dict[str, float]:
+    """Returns a by-element dict for the mass% of each atom from the total mass (for elemental analysis).
+
+    Args:
+        sum_formula (str): Sum formula as string.
+
+    Returns:
+        dict[str, int]: Keys: Element (e.g. C). Values: Mass% of element as decimal.
+    """
+    res:dict[str, float] = {}
+    formula = molmass.Formula(sum_formula)
+    total_mass = formula.mass
+    for element in formula.composition():
+        res[element] = (formula.composition()[element].count * molmass.ELEMENTS[element].mass) / total_mass
+    return res
 
 
 

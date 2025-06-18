@@ -101,6 +101,6 @@ if __name__ == '__main__':
         # image.show()
 
         timestamp = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
-        output_path = os.path.join('output', f'infrared_form_filled_{timestamp}.png')
+        output_path = os.path.join('output', f'ir_form_filled_{timestamp}.png')
         image.save(output_path)
         print(f'Image saved at {output_path}')
