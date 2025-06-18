@@ -1,8 +1,10 @@
 import io
+import tkinter as tk
+from typing import Callable
 import molmass #type:ignore
 import chemdraw #type:ignore
-import tkinter as tk
 from PIL import Image, ImageDraw, ImageFont, ImageChops
+
 
 def translate_by_dict(text:str, translation_map:dict[str, str]) -> str:
     """Translates a string by using a dictionary as a translation map.
@@ -49,7 +51,8 @@ def draw_text(
         position:tuple[int,int] = (0,0),
         text:str = "hello world",
         text_color:tuple[int,int,int]|str = "black",
-        text_size:int = 100
+        text_size:int = 100,
+        text_alignment:str = 'la'
         ) -> None:
     """Draws text onto an image at given position. Changes image in-place, so no returns.
 
@@ -66,8 +69,9 @@ def draw_text(
     draw.text(
         position,
         text,
-        fill= text_color,
-        font = draw_text_font
+        fill = text_color,
+        font = draw_text_font,
+        anchor= text_alignment
     )
 
 def crop_to_content(img:Image.Image, bg_color="white"):
@@ -206,6 +210,48 @@ def checkbox_fields(fields:list[str]) -> dict:
         cb = tk.Checkbutton(root, text=field, variable=var)
         cb.pack(anchor="w")
         checkboxes[field] = var
+
+    submit_btn = tk.Button(root, text="Submit", command=submit_and_close)
+    submit_btn.pack(pady=10)
+
+    root.mainloop()
+    return results
+
+
+
+def mixed_fields(fields:dict[str, Callable]) -> dict:
+    """Function that opens a window for mixed fields (checkboxes and text enter fields)
+
+    Args:
+        fields (dict[str, Callable]): Dictionary of requested fields. Key: Name of field and key in the results dict. Value: Callable that determines the type of field. Bool = checkbox; str = Text field
+
+    Returns:
+        dict: Results dict that uses the fields keys as keys
+    """
+    def submit_and_close():
+        for label, var in field_values.items():
+            results[label] = var.get()
+        root.quit()
+        root.destroy()
+    root = tk.Tk()
+    root.title("Select Options")
+
+    results:dict[str, str] = {}
+    field_values = {}
+
+    for field, fieldtype in fields.items():
+        if fieldtype is bool:
+            var = tk.BooleanVar()
+            cb = tk.Checkbutton(root, text=field, variable=var)
+            cb.pack(anchor="w")
+            field_values[field] = var
+        elif fieldtype is str:
+            var = tk.StringVar(root)
+            label = tk.Label(root, text= str(field))
+            element = tk.Entry(root, textvariable= var)
+            label.pack(anchor='w')
+            element.pack(anchor='w')
+            field_values[field] = var
 
     submit_btn = tk.Button(root, text="Submit", command=submit_and_close)
     submit_btn.pack(pady=10)

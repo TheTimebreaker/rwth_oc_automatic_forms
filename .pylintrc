@@ -5,3 +5,5 @@ disable=
     W0614, # unused-wildcard-imports
     C0301, # line-too-long
     C0321, # multiple-statements
+    R0913, # too-many-arguments
+    R0917, # too-many-positional-arguments
