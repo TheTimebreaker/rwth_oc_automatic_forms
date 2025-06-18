@@ -1,11 +1,15 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+block_cipher = None
 
 a = Analysis(
-    ['mass.py'],
+    ['chn.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[
+        ('base_forms/*', 'base_forms'),
+        ('fonts/*', 'fonts')
+    ],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -14,19 +18,21 @@ a = Analysis(
     noarchive=False,
     optimize=0,
 )
-pyz = PYZ(a.pure)
+pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
 exe = EXE(
     pyz,
     a.scripts,
+    a.binaries,
+    a.zipfiles,
+    a.datas,
     [],
-    exclude_binaries=True,
-    name='mass',
+    name='chn',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
-    console=True,
+    console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
@@ -40,5 +46,5 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='mass',
+    name='chn',
 )
