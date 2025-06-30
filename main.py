@@ -1,4 +1,6 @@
 import io
+import sys
+import os
 import tkinter as tk
 from typing import Callable
 import molmass #type:ignore
@@ -44,7 +46,15 @@ def superscript(text:str) -> str:
         "U": "ᵁ", "V": "ⱽ", "W": "ᵂ", "X": "ˣ", "Y": "ʸ", "Z": "ᶻ", "+": "⁺",
         "-": "⁻", "=": "⁼", "(": "⁽", ")": "⁾"}
     return translate_by_dict(text, superscript_map)
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS #pylint:disable=no-member,protected-access
+    except Exception:
+        base_path = os.path.abspath(".")
 
+    return os.path.join(base_path, relative_path)
 
 def draw_text(
         img:Image.Image,
@@ -64,7 +74,7 @@ def draw_text(
         text_size (int, optional): Font size of drawn text. Defaults to 100.
     """
     draw = ImageDraw.Draw(img)
-    draw_text_font:ImageFont.FreeTypeFont = ImageFont.truetype('fonts/DejaVuSans.ttf', size= text_size)
+    draw_text_font:ImageFont.FreeTypeFont = ImageFont.truetype(resource_path('fonts/DejaVuSans.ttf'), size= text_size)
 
     draw.text(
         position,

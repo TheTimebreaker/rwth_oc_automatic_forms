@@ -1,4 +1,4 @@
-import os
+
 import urllib
 import urllib.error
 from datetime import date, datetime
@@ -7,7 +7,6 @@ import cirpy #type:ignore
 from PIL import Image
 
 import main
-
 
 if __name__ == '__main__':
     freetexts = main.freetext_fields([
@@ -62,7 +61,7 @@ if __name__ == '__main__':
     # 'eye-irritating': True}
 
 
-    with Image.open('base_forms/chn.png') as image:
+    with Image.open(main.resource_path('base_forms/chn.png')) as image:
         image = image.convert('RGBA')
         main.draw_text(image, (800,825), f'{freetexts['name']} / {freetexts['workgroup']}', 'black', 80) # Name und Arbeitskreis
         # main.draw_text(image, (1300,1215), freetexts['sample_name'], 'black', 80) # Substanzbezeichnung
@@ -145,6 +144,6 @@ if __name__ == '__main__':
         # time.sleep(0.5)
 
         timestamp = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
-        output_path = os.path.join('output', f'chn_form_filled_{timestamp}.png')
+        output_path = f'chn_form_filled_{timestamp}.png'
         image.save(output_path)
         print(f'Image saved at {output_path}')

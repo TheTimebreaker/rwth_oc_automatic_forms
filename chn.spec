@@ -1,4 +1,10 @@
 # -*- mode: python ; coding: utf-8 -*-
+from PyInstaller.utils.hooks import collect_data_files
+kaleido_datas = collect_data_files('kaleido')
+datas=[
+        ('base_forms/*', 'base_forms'),
+        ('fonts/*', 'fonts')
+    ] + kaleido_datas
 
 block_cipher = None
 
@@ -6,11 +12,8 @@ a = Analysis(
     ['chn.py'],
     pathex=[],
     binaries=[],
-    datas=[
-        ('base_forms/*', 'base_forms'),
-        ('fonts/*', 'fonts')
-    ],
-    hiddenimports=[],
+    datas=datas,
+    hiddenimports=['kaleido'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
