@@ -1,0 +1,2 @@
+- One unified thing that fills out all
+- make structure editable once confirmed

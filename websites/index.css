@@ -1,0 +1,20 @@
+body {
+  background-color: white;
+}
+
+
+#inputfields {
+  display: grid;
+  grid-template-columns: 150px 2fr;
+  gap: 10px 0px;
+}
+.disabled {
+  background-color: #eee;       /* light grey background */
+  color: #555;                  /* slightly dim text */
+  opacity: 60%;
+  border: 1px solid #ccc;       /* muted border */
+  cursor: not-allowed;          /* shows the "disabled" cursor */
+}
+.disabled:focus {
+  outline: none;                /* remove the blue outline on focus */
+}

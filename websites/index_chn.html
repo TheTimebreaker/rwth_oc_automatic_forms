@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <link rel="stylesheet" href="index.css">
+      <link rel="stylesheet" href="index_chn.css">
+      <script type = 'module' src="index_chn.js"></script>
+      <script type = 'module' src="centrals.js"></script>
+  </head>
+
+  <body>
+    <form id='inputfields'>
+      <label for="name-input">Name</label>
+      <input id="name-input" type="text" name="name">
+      <label for="workgroup-input">Workgroup</label>
+      <input id="workgroup-input" type="text" name="workgroup">
+      <label for="phone-input">Phone number</label>
+      <input id="phone-input" type="number" name="phone">
+
+      <label for="sample-input">Sample</label>
+      <input id="sample-input" type="text" name="sample" maxlength="8">
+
+      <label>State of matter</label>
+      <div>      
+        <input type="radio" id="solid" name="stateofmatter" value="solid">
+        <label for="solid">Solid</label><br>
+        
+        <input type="radio" id="liquid" name="stateofmatter" value="liquid">
+        <label for="liquid">Liquid</label><br>
+        
+        <input type="radio" id="sirup" name="stateofmatter" value="sirup">
+        <label for="sirup">Sirup</label><br>
+      </div>
+
+      <label>Properties</label>
+        <div>
+          <input type="checkbox" id="sublimates" name="otherproperties_sublimates">
+          <label for="sublimates">sublimates</label><br>
+
+          <input type="checkbox" id="volatile" name="otherproperties_volatile">
+          <label for="volatile">volatile</label>
+        </div>
+
+      <label>Sensitivity</label>
+        <div>
+          <input type="checkbox" id="airhumidity" name="sensitivity_airhumidity">
+          <label for="airhumidity">air humidity</label><br>
+
+          <input type="checkbox" id="airoxygen" name="sensitivity_airoxygen">
+          <label for="airoxygen">air Oxygen</label><br>
+
+          <input type="checkbox" id="roomtemperature" name="sensitivity_rt">
+          <label for="roomtemperature">room temperature</label>
+        </div>
+
+      <label>Dangers</label>
+        <div>
+          <input type="checkbox" id="toxic" name="dangers_toxic">
+          <label for="toxic">toxic</label><br>
+
+          <input type="checkbox" id="skinirritant" name="dangers_skinirritant">
+          <label for="skinirritant">skin-irritating</label><br>
+
+          <input type="checkbox" id="eyeirritant" name="dangers_eyeirritant">
+          <label for="eyeirritant">eye-irritating</label>
+        </div>
+        
+
+      <label for="mp-input">m.p. [°C]</label>
+      <input id="mp-input" type="number" name="mp">
+      <label for="bp-input">b.p. [°C]</label>
+      <input id="bp-input" type="number" name="bp">
+
+      <label for="purity-input">Purity [%]</label>
+      <div>
+        <input id="purity-input" type="number" name="purity">
+        <label>&nbsp;&nbsp;&nbsp;by&nbsp;&nbsp;&nbsp;</label>
+        <input id="puritymethod-input" type="text" name="puritymethod">
+      </div>
+
+      <label>Molecular structure</label>
+      <div>
+        <div class="chn-entry-wrapper disabled-tooltip">
+          <div>
+            <button type="button" onclick="openDrawStructure()">Draw structure</button> or <input type="file" id="molfile" accept=".mol,.sdf,.sd, chemical/x-mdl-mofile,chemical/x-mdl-sdfile"><br>
+          </div>
+          <div style="display: grid; grid-template-columns: auto 1fr; gap: 5px 30px">
+            <label class="disabled-tooltip" for="sumformula">Sum formula</label>
+            <input class="disabled easydoubleclick" type="text" id = "sumformula" name="sumformula" readonly/>
+            <label class="disabled-tooltip" for="smiles">SMILES</label>
+            <input class="disabled easydoubleclick" type="text" id = "smiles" name="smiles" readonly/>
+          </div>
+      
+          <div class="chn-entry">
+            <label for="c_count">C</label>
+            <input type="text" class="disabled" id = "c_count" readonly/>
+          </div>
+          <div class="chn-entry">
+            <label for="h_count">H</label>
+            <input type="text" class="disabled" id = "h_count" readonly/>
+          </div>
+          <div class="chn-entry">
+            <label for="n_count">N</label>
+            <input type="text" class="disabled" id = "n_count" readonly/>
+          </div>
+
+          <div class="chn-entry">
+            <label for="c_percent">C%</label>
+            <input type="text" class="disabled easydoubleclick" id="c_percent" name="C" readonly/>
+          </div>
+          <div class="chn-entry">
+            <label for="h_percent">H%</label>
+            <input type="text" class="disabled easydoubleclick" id="h_percent" name="H" readonly/>
+          </div>
+          <div class="chn-entry">
+            <label for="n_percent">N%</label>
+            <input type="text" class="disabled easydoubleclick" id="n_percent" name="N" readonly/>
+          </div>
+        </div>
+      </div>
+
+      <label>Image</label>
+      <a href="https://http.cat/status/204" id="catplaceholder" target="_blank" rel="noopener noreferrer" style="width: 200px;">
+        <img class='placeholder' title="This is a placeholder image. Image source: https://http.cat/status/204" src='https://http.cat/204.jpg' id='molecule-image' style="width: 200px;"/>
+      </a>
+
+      <label>Additional settings</label>
+      <div>
+        <input type="checkbox" id="automaticdate" name="automaticdate" checked>
+        <label for="automaticdate">Fill in todays date automatically</label>
+      </div>
+
+      <div></div>
+      <div>
+        <input type="submit" id='submit' value="Generate Preview" />
+        <button id="downloadSVG" type="button" disabled title="Generate a preview to enable downloading.">Download as SVG</button>
+        <button id="downloadPNG" type="button" disabled title="Generate a preview to enable downloading.">Download as PNG</button>
+      </div>
+
+    </form>
+    <hr/>
+
+    <div class="container" id="img-container" style="width:1200px; align-self: center">
+      <!-- JS will replace this with the generated form -->
+    </div>
+
+    <script>
+      function openDrawStructure() {
+        window.open("drawStructure.html", "childWin", "width=400,height=300");
+      }
+      function submitDrawStructure(molecular_formula_dict, smiles, elemental_avrg_mass_contribution_dict, img) {
+        set_sum_formula(molecular_formula_dict);
+        set_elemental_contribution(elemental_avrg_mass_contribution_dict);
+        set_molecule_image_svg(img);
+        document.getElementById('catplaceholder').removeAttribute('href');
+        set_molecule_smiles(smiles);
+        document.getElementById('molfile').value = '';
+      }
+      document.querySelectorAll('input[type=radio]').forEach(radio => {
+        radio.addEventListener('click', function () {
+          if (lastChecked === this) {
+            this.checked = false;
+            lastChecked = null;
+          } else {
+            lastChecked = this;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

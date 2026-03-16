@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <link rel="stylesheet" href="index.css">
+      <link rel="stylesheet" href="index_nmr.css">
+      <script type = 'module' src="index_nmr.js"></script>
+      <script type = 'module' src="centrals.js"></script>
+  </head>
+
+  <body>
+    <form id='inputfields'>
+      <label for="name-input">Name</label>
+      <input id="name-input" type="text" name="name">
+      <label for="workgroup-input">Workgroup</label>
+      <input id="workgroup-input" type="text" name="workgroup">
+      <label for="sample-input">Sample</label>
+      <input id="sample-input" type="text" name="sample" maxlength="999">
+
+      <label>Solvent</label>
+      <div>
+        <input id="solvent-input" type="radio" name="solvent" value="selector" checked>
+        <select id="solvent-selector" name="solvent_selector">
+          <option value="Chloroform-d" selected>Chloroform-d</option>
+          <option value="Acetone-d₆">Acetone-d₆</option>
+          <option value="Benzene-d₆">Benzene-d₆</option>
+          <option value="DCM-d₂">Dichloromethane-d₂</option>
+          <option value="DMF-d₇">Dimethylformamide-d₇</option>
+          <option value="DMSO-d₆">Dimethyl sulfoxide-d₆</option>
+          <option value="Ethanol-d₆">Ethanol-d₆</option>
+          <option value="Methanol-d₄">Methanol-d₄</option>
+          <option value="THF-d₈">Tetrahydrofuran-d₈</option>
+          <option value="Water-d₂">Water-d₂</option>
+        </select>
+        <br>
+
+        <input id="custom-input" type="radio" name="solvent" value="custom">
+        <input id="custom-solvent" type="text" name="custom_solvent"> <br>
+
+        <input id="latersolvent-input" type="radio" name="solvent" value="later">
+        <label for="latersolvent-input">Don't preselect any</label>
+      </div>
+
+      <label>Experiments</label>
+      <div>
+        <input id="xp-1h" type="checkbox" name="xp_1h"><label for="xp-1h">¹H</label><br>
+        <input id="xp-1hq" type="checkbox" name="xp_1hq"><label for="xp-1hq">¹H quant</label><br>
+        <input id="xp-13c" type="checkbox" name="xp_13c"><label for="xp-13c">¹³C</label><br>
+        <input id="xp-13cq" type="checkbox" name="xp_13cq"><label for="xp-13cq">¹³C quant</label><br>
+        <input id="xp-19f" type="checkbox" name="xp_19f"><label for="xp-19f">¹⁹F</label><br>
+        <input id="xp-19fq" type="checkbox" name="xp_19fq"><label for="xp-19fq">¹⁹F quant</label><br>
+        <input id="xp-31p" type="checkbox" name="xp_31p"><label for="xp-31p">³¹P</label><br>
+        <input id="xp-31pq" type="checkbox" name="xp_31pq"><label for="xp-31pq">³¹P quant</label><br>
+        <hr>
+        <input id="xp-hsqc" type="checkbox" name="xp_hsqc"><label for="xp-hsqc">HSQC</label><br>
+        <input id="xp-hmbc" type="checkbox" name="xp_hmbc"><label for="xp-hmbc">HMBC</label><br>
+        <input id="xp-cosy" type="checkbox" name="xp_cosy"><label for="xp-cosy">COSY</label><br>
+        <input id="xp-dosy" type="checkbox" name="xp_dosy"><label for="xp-doys">DOSY</label><br>
+        <input id="xp-noesy" type="checkbox" name="xp_noesy"><label for="xp-noesy">NOESY</label><br>
+      </div>
+
+      <label>Additional settings</label>
+      <div>
+        <input type="checkbox" id="automaticdate" name="automaticdate" checked>
+        <label for="automaticdate">Fill in todays date automatically</label>
+        <ul class = "datepicker">
+          <li><input type="checkbox" id="autodate-year" name="autodate_year" checked><label for="autodate-year">Year</label></li>
+          <li><input type="checkbox" id="autodate-month" name="autodate_month"><label for="autodate-month">Month</label></li>
+          <li><input type="checkbox" id="autodate-day" name="autodate_day"><label for="autodate-day">Day</label></li>
+        </ul>
+      </div>
+      <div></div> <!-- empty div to make th buttons appear neatly on the right -->
+      <div>
+        <input type="submit" id='submit' value="Generate Preview" />
+        <button id="downloadSVG" type="button" disabled title="Generate a preview to enable downloading.">Download as SVG</button>
+        <button id="downloadPNG" type="button" disabled title="Generate a preview to enable downloading.">Download as PNG</button>
+      </div>
+
+    </form>
+    <hr/>
+
+    <div class="container" id="img-container" style="width:1200px; align-self: center">
+      <!-- JS will replace this with the generated form -->
+    </div>
+
+    <script>
+      function openDrawStructure() {
+        window.open("drawStructure.html", "childWin", "width=400,height=300");
+      }
+      function submitDrawStructure(molecular_formula_dict, smiles, _, img) {
+        set_sum_formula(molecular_formula_dict);
+        set_molecule_image_svg(img);
+        document.getElementById('catplaceholder').removeAttribute('href');
+        set_molecule_smiles(smiles);
+        document.getElementById('molfile').value = '';
+      }
+      let lastChecked = null;
+
+      document.querySelectorAll('input[type=radio]').forEach(radio => {
+        radio.addEventListener('click', function () {
+          if (lastChecked === this) {
+            this.checked = false;
+            lastChecked = null;
+          } else {
+            lastChecked = this;
+          }
+        });
+      });
+
+      const selectorRadio = document.getElementById("solvent-input");
+      const selector = document.getElementById("solvent-selector");
+      const customRadio = document.getElementById("custom-input");
+      const customInput = document.getElementById("custom-solvent");
+      // selecting something from dropdown
+      selector.addEventListener("change", () => {
+          selectorRadio.checked = true;
+      });
+      // typing into custom field
+      customInput.addEventListener("input", () => {
+          customRadio.checked = true;
+      });
+    </script>
+  </body>
+</html>
