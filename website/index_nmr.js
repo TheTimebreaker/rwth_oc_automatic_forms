@@ -1,15 +1,9 @@
-import {process_CHN, subscript_numbers, get_today_date, get_exact_mass} from './centrals.js'
+import {get_today_date} from './centrals.js'
 import {
-  downloadSVGButton,
-  downloadPNGButton,
   form,
-  submit_btn,
-  molfileElement,
   setupFormEventListeners,
   setupFilepickerEventListener,
   getFormData,
-  drawImage,
-  drawDebug,
   drawText
 } from './index.js'
 
