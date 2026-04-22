@@ -19,7 +19,7 @@ function methodWarningListener(submitFunction) {
     let msg = [];
 
     if (formData.gcms || formData.gcms_ei || formData.gcms_ci) {
-      msg.push('⚠️ Because you have selected GCMS options: Submit a GC spectrum to the mass spectra department together with this form.')
+      msg.push('⚠️ Because you have selected GCMS options: Even though the form sheet claims that you have to submit a GC spectrum before the mass spectra department can measure a GCMS spectrum, this is outdated and you don\' need to do this.')
       
     };
 
