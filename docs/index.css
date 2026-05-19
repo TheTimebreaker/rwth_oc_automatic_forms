@@ -18,3 +18,22 @@ body {
 .disabled:focus {
   outline: none;                /* remove the blue outline on focus */
 }
+
+
+.print-only {
+  display: none !important;
+}
+
+.printable {
+  display: block;
+}
+
+@media print {
+  body > * {
+    display: none !important;
+  }
+  .printable,
+  .print-only {
+    display: block !important;
+  }
+}

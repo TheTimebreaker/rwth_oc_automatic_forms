@@ -22,6 +22,7 @@ function submitAndDrawForm(event) {
 function drawForm(formData) {
   const src = 'base_forms/ir.png';
   const container = document.getElementById('img-container');
+  container.classList.add("printable")
   if (!container) {
     return false
   };

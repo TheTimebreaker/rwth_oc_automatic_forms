@@ -4,6 +4,7 @@ import {downloadSVG, downloadPNG} from './download.js'
 
 export const downloadSVGButton = document.getElementById('downloadSVG');
 export const downloadPNGButton = document.getElementById('downloadPNG');
+export const printButton = document.getElementById('printjobButton');
 export const molfileElement = document.getElementById('molfile');
 export const form = document.getElementById('inputfields');
 export const submit_btn = document.getElementById('submit');
@@ -54,14 +55,20 @@ downloadPNGButton.addEventListener('click', () => {
   const svg = document.getElementById('img-container')?.querySelector('svg') || document.querySelector('svg')
   downloadPNG(svg);
 });
+printjobButton.addEventListener('click', () => {
+  console.log('Printing...');
+  window.print();
+})
 export function setupFormEventListeners(submitFunction) {
   form.addEventListener('input', () => {
     // window.previewIsCurrent = false;
-    const msg = "Downloading is disabled, once the preview is out-of-date with your inputs. Generate a new preview to enable download.";
+    const msg = "Downloading / printing is disabled, once the preview is out-of-date with your inputs. Generate a new preview to enable download.";
     downloadPNGButton.disabled = true;
     downloadPNGButton.title = msg;
     downloadSVGButton.disabled = true;
     downloadSVGButton.title = msg;
+    printjobButton.disabled =true;
+    printjobButton.title = msg;
   });
   form.addEventListener('submit', (event) => {
     if (event){
@@ -73,6 +80,8 @@ export function setupFormEventListeners(submitFunction) {
     downloadPNGButton.title = '';
     downloadSVGButton.disabled = false;
     downloadSVGButton.title = '';
+    printjobButton.disabled = false;
+    printjobButton.title = '';
   });
 }
 
