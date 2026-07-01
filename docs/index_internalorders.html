@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <link rel="stylesheet" href="index.css">
+      <link rel="stylesheet" href="index_ms.css"> <!-- TODO -->
+      <script type = 'module' src="index_internalorders.js"></script>
+      <script type = 'module' src="centrals.js"></script>
+  </head>
+
+  <body>
+    <form id='inputfields'>
+      <label for="name-input">Name</label>
+      <input id="name-input" type="text" name="name">
+      <label for="workgroup-input">Workgroup</label>
+      <input id="workgroup-input" type="text" name="workgroup">
+
+      <label for="product-input">Chemical / Product</label>
+      <input id="product-input" type="text" name="product" maxlength="999">
+
+      <label for="amount-input">Amount</label>
+      <input id="amount-input" type="text" name="amount" maxlength="999">
+
+      <label for="price-input">Price</label>
+      <input id="price-input" type="text" name="price" maxlength="999">
+
+      <label>Additional settings</label>
+      <div>
+        <input type="checkbox" id="automaticdate" name="automaticdate" checked>
+        <label for="automaticdate">Fill in todays date automatically</label>
+        <ul class = "datepicker">
+          <li><input type="checkbox" id="autodate-year" name="autodate_year" checked><label for="autodate-year">Year</label></li>
+          <li><input type="checkbox" id="autodate-month" name="autodate_month"><label for="autodate-month">Month</label></li>
+          <li><input type="checkbox" id="autodate-day" name="autodate_day"><label for="autodate-day">Day</label></li>
+        </ul>
+      </div>
+
+      <div></div>
+      <div>
+        <input type="submit" id='submit' value="Generate Preview" />
+        <button id="downloadSVG" type="button" disabled title="Generate a preview to enable downloading.">Download as SVG</button>
+        <button id="downloadPNG" type="button" disabled title="Generate a preview to enable downloading.">Download as PNG</button>
+        <button id="printjobButton" type="button" disabled title="Generate a preview to enable printing.">Print preview</button>
+      </div>
+
+    </form>
+    <hr/>
+
+    <div class="container" id="img-container" style="width:1200px; align-self: center">
+      <!-- JS will replace this with the generated form -->
+    </div>
+
+    <script>
+      function openDrawStructure() {
+        window.open("drawStructure.html", "childWin", "width=400,height=300");
+      }
+      function submitDrawStructure(molecular_formula_dict, smiles, _, img) {
+        set_sum_formula(molecular_formula_dict);
+        set_molecule_image_svg(img);
+        document.getElementById('catplaceholder').removeAttribute('href');
+        set_molecule_smiles(smiles);
+        document.getElementById('molfile').value = '';
+      }
+      document.querySelectorAll('input[type=radio]').forEach(radio => {
+        radio.addEventListener('click', function () {
+          if (lastChecked === this) {
+            this.checked = false;
+            lastChecked = null;
+          } else {
+            lastChecked = this;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
